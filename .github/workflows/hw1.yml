@@ -1,0 +1,30 @@
+name: HW1 autograder
+
+# Only re-runs when HW1's own folder changes — pushing another homework's
+# work doesn't trigger HW1's check, and vice versa. This is what makes
+# per-homework autograding workable inside one shared repo.
+on:
+  push:
+    paths:
+      - "hw1/**"
+
+jobs:
+  check:
+    # Skip on the template repo itself -- there's never a real submission
+    # here to check, only in each student's own copy created via "Use this
+    # template." Without this, every push to the template (even a README
+    # edit) trips a false-failure email.
+    if: github.repository != 'tufts-coding-for-psychology/coding-for-psychology-template'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hw1
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run HW1 structural checks
+        run: python check_hw1.py

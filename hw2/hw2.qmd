@@ -1,0 +1,60 @@
+---
+title: "HW2 — Accuracy Scoring and Feedback Logic"
+author: "Your Name"
+format: html
+editor: visual
+---
+
+## What I built
+
+*Describe the code component you added to your HW1 task: the dictionary you used for the correct-answer lookup and how feedback text is generated and displayed.*
+
+TODO: your answer here.
+
+## What changed from the shared in-class version
+
+*You practiced a minimal version of this on your own file in class04's last segment. What did you have to change or add to get the fuller version working — different tab (Begin Routine / End Routine / Each Frame), different variable names, a bug you didn't hit in class?*
+
+TODO: your answer here.
+
+## Reflection
+
+*A few sentences: does your feedback logic duplicate something the Keyboard component's built-in "correct answer" field already does? Why write it yourself anyway? Anything about dictionary-based lookups that clicked (or didn't) for you here.*
+
+TODO: your reflection here.
+
+## Sources
+
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+
+TODO: your answer here.
+
+---
+
+## PSY 0210 extension: conditions-validation script
+
+*(0110 students: optional/ungraded — feel free to attempt this for practice, but it is not required and does not affect your grade.)*
+
+Per class04, write a **standalone Python script** — not a Builder file, not a Colab notebook, run on its own via PsychoPy's Coder view — that validates your own conditions spreadsheet against this course's ≥18-observations-per-condition rule.
+
+**Start from the template, don't write this from scratch.** Reading a file from disk and handling command-line arguments are genuinely new skills this course doesn't otherwise teach — so `hw2/check_conditions_template.py` already has that part written and explained. Copy it to `hw2/task/check_conditions.py` and fill in only the part marked `TODO`: counting how many trials each condition produces and printing a pass/fail line for each one. That counting logic is the same dictionary-counting pattern from class04's Colab warm-up — same idea, just counting rows in a spreadsheet instead of items in a list.
+
+**Submit it as `hw2/task/check_conditions.py`.** (This exact filename and path is what the automated check looks for — if you name it something else, the 0210 portion of the check will simply be skipped, so use this path.)
+
+The template already handles:
+
+- Reading your conditions spreadsheet with `pandas` (`.xlsx` or `.csv`).
+- Accepting the conditions file path as an optional command-line argument, falling back to a default path you set at the top of the file for your own local testing. This is what lets you just click PsychoPy Coder's **Run** button with no changes, *and* lets the automated check point the same script at a small sample file instead of your real data.
+- A clear error message if the file it's pointed at doesn't exist.
+
+Your job is filling in the `TODO` section so the script:
+
+1. Counts how many trials each condition will produce once repetitions are applied (rows × `N_REPS`, already a constant near the top of the file).
+2. Prints a clear pass/fail message **per condition** against the ≥18-observations-per-level rule, e.g.:
+
+   ```
+   congruent: 18 trials — OK
+   incongruent: 12 trials — FAILS minimum of 18
+   ```
+
+The automated check runs `python check_conditions.py sample_conditions.csv` against a small synthetic sample conditions file (not your real data) and only confirms it runs without crashing and prints output — it does not check your exact wording or verify your pass/fail logic is correct. The sample file has the same columns as the original Stroop conditions file (`word`, `letterColor`, `corrAns`, `congruent`, plus a `condition` column), so as long as your `CONDITION_COLUMN` is one of those names the sample will have it; if your own modified conditions file uses a column name of your own invention, the automated check can't find that column and will report a red X even though your script may be fine — mention that in your reflection and don't worry about it. One more rule: **print your pass/fail lines rather than exiting with an error code** (no `sys.exit(1)` on a failed condition) — the sample file deliberately contains a failing condition, and the automated check treats any non-zero exit as a crash. Getting the logic right against your own real conditions file is on you; test it yourself against your conditions spreadsheet before submitting.

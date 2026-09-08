@@ -1,0 +1,56 @@
+---
+title: "HW4 — My Assigned Pilot Dataset"
+author: "Your Name"
+format:
+  html:
+    embed-resources: true  # one self-contained .html file, nothing else to commit
+editor: visual
+---
+
+## Setup
+
+```{r}
+
+```
+
+## Read in your dataset
+
+```{r}
+
+```
+
+## Clean your data
+
+Your file has real issues in it — missing values, at least one implausible/extreme value, and at least one column with mixed text-and-number entries. Find them, decide what to do about each, and say briefly why.
+
+```{r}
+
+```
+
+## Correlation
+
+```{r}
+
+```
+
+## Interpretation
+
+*A short paragraph: what does this correlation suggest about the relationship between sleep and physical activity in this sample? Anything else about your dataset worth mentioning?*
+
+TODO: your interpretation here.
+
+## Sources
+
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+
+TODO: your answer here.
+
+---
+
+## PSY 0210 extension: data-cleaning memo
+
+*(0110 students: optional/ungraded — feel free to attempt for practice.)*
+
+*A bulleted log (roughly 5–10 bullets) of every cleaning decision you made above: what you found, what you did about it, and why — written so someone else could retrace and defend each choice.*
+
+- TODO: your memo here.

@@ -1,0 +1,47 @@
+name: HW2 autograder
+
+# Only re-runs when HW2's own folder changes — pushing another homework's
+# work doesn't trigger HW2's check, and vice versa. This is what makes
+# per-homework autograding workable inside one shared repo.
+on:
+  push:
+    paths:
+      - "hw2/**"
+
+jobs:
+  check:
+    # Skip on the template repo itself -- there's never a real submission
+    # here to check, only in each student's own copy created via "Use this
+    # template." Without this, every push to the template (even a README
+    # edit) trips a false-failure email.
+    if: github.repository != 'tufts-coding-for-psychology/coding-for-psychology-template'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hw2
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install pandas openpyxl
+
+      - name: Create synthetic sample conditions file (for PSY 0210 check only)
+        run: |
+          cat > sample_conditions.csv <<'EOF'
+          condition,word,letterColor,corrAns,congruent
+          congruent,red,red,left,1
+          congruent,green,green,down,1
+          incongruent,red,green,down,0
+          incongruent,red,blue,right,0
+          incongruent,green,red,left,0
+          incongruent,green,blue,right,0
+          incongruent,blue,red,left,0
+          incongruent,blue,green,down,0
+          EOF
+
+      - name: Run HW2 structural checks
+        run: python check_hw2.py sample_conditions.csv

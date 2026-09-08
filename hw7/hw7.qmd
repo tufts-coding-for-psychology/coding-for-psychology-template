@@ -1,0 +1,90 @@
+---
+title: "HW7 — Final Project Analysis"
+author: "Your Name"
+format:
+  html:
+    embed-resources: true  # one self-contained .html file, nothing else to commit
+editor: visual
+---
+
+## Setup
+
+```{r}
+library(tidyverse)
+```
+
+## Simulate your design
+
+No real participant data to match — pick plausible parameters for your own task and simulate from them, same `rnorm()` mechanics as class10 and HW6.
+
+```{r}
+# TODO: replace with your own design's parameters
+set.seed(2026)
+n <- 20  # per condition, must be >= 18 (the course's minimum-observations rule)
+
+# TODO: adapt condition names and DV to your own task
+condition_a <- rnorm(n, mean = 600, sd = 80)
+condition_b <- rnorm(n, mean = 650, sd = 90)
+
+simulated_data <- tibble(
+  condition = rep(c("condition_a", "condition_b"), each = n),
+  dv = c(condition_a, condition_b)
+)
+```
+
+## Save your simulated data
+
+Simulated data is fine to commit — this isn't real pilot data.
+
+```{r}
+dir.create("../data", showWarnings = FALSE)  # created in HW5; harmless if it already exists
+write_csv(simulated_data, "../data/final_project_simulated.csv")
+```
+
+## Wrangle
+
+Same dplyr pattern as HW3, applied to your simulated data. Your final object **must be named `summary_table`**.
+
+```{r}
+# TODO: adapt to your own column names — the mean-DV column's name must
+# start with "mean_" (e.g. mean_rt, mean_acc) for the automated check
+summary_table <- simulated_data |>
+  group_by(condition) |>
+  summarize(
+    mean_rt = mean(dv, na.rm = TRUE),
+    n = n()
+  )
+
+summary_table
+```
+
+## Visualize
+
+Same ggplot2 pattern as class08.
+
+```{r}
+# TODO: build your figure
+```
+
+## Sources
+
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+
+TODO: your answer here.
+
+---
+
+## PSY 0210 extension: the null twin
+
+*(0110 students: optional/ungraded — feel free to attempt for practice.)*
+
+Simulate your design again with the two condition means set **equal**, save it as a second CSV in the repo-root `data/` folder, and plot it with the same figure code as above.
+
+```{r}
+# TODO (0210): null simulation — same code as your simulation above,
+# but with equal means; save to ../data/final_project_null.csv and plot
+```
+
+*1–2 sentences: what does the null version look like, and could you have told the two plots apart by eye?*
+
+TODO: your answer here.

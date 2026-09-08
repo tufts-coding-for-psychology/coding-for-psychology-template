@@ -1,0 +1,87 @@
+---
+title: "HW6 — Simulate Your Pilot Design"
+author: "Your Name"
+format:
+  html:
+    embed-resources: true  # one self-contained .html file, nothing else to commit
+editor: visual
+---
+
+## Setup
+
+```{r}
+library(tidyverse)
+```
+
+## Simulate your pilot design
+
+Your own HW3 condition means as the centers; the class pooled between-subject SD (from class10) as the spread. Same mechanics as class10's guided build.
+
+```{r}
+# TODO: replace with your own HW3 means and the class pooled SD
+set.seed(2026)
+n_participants <- 20  # simulated people, not trials
+
+congruent   <- rnorm(n_participants, mean = 600, sd = 90)
+incongruent <- rnorm(n_participants, mean = 650, sd = 90)
+
+sim_data <- tibble(
+  participant = rep(1:n_participants, times = 2),
+  condition   = rep(c("congruent", "incongruent"), each = n_participants),
+  mean_rt     = c(congruent, incongruent)
+)
+```
+
+## Save your simulated data
+
+Simulated data is fine to commit — this isn't real pilot data.
+
+```{r}
+dir.create("data", showWarnings = FALSE)
+write_csv(sim_data, "data/pilot_sim.csv")
+```
+
+## Wrangle
+
+Same dplyr pattern as HW3, applied to your simulated data. Your final object **must be named `summary_table`**, with a mean-DV column whose name starts with `mean_`.
+
+```{r}
+summary_table <- sim_data |>
+  group_by(condition) |>
+  summarize(
+    mean_rt = mean(mean_rt),
+    n = n()
+  )
+
+summary_table
+```
+
+## Visualize
+
+Your class08 figure code, adapted to the simulated table.
+
+```{r}
+# TODO: build your figure
+```
+
+## Sources
+
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+
+TODO: your answer here.
+
+---
+
+## PSY 0210 extension: two sample sizes
+
+*(0110 students: optional/ungraded — feel free to attempt for practice.)*
+
+Re-run your simulation with a much larger N (e.g., 200), plot both versions with the same figure code, and answer below.
+
+```{r}
+# TODO (0210): the same simulation at a second sample size, plus its plot
+```
+
+*1–2 sentences: what changed between the two plots, and why?*
+
+TODO: your answer here.

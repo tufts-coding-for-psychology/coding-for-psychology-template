@@ -1,0 +1,29 @@
+# hw3/data/ holds each student's REAL class05 pilot CSV — real data from a
+# real classmate. This repo stays private, but your work may end up in a
+# public copy you publish after the semester (see the course website's
+# Resources page), and anything committed here can end up in that later
+# copy unless it's kept out of git entirely.
+# HW3's autograder doesn't need this file committed either — it supplies its
+# own synthetic stand-in during the automated check on GitHub (see
+# hw3/check_hw3.R) — so there's no reason
+# for the real file to ever be pushed.
+#
+# Note: the repo-root data/ folder is NOT covered here. That folder holds
+# the final project's simulated data (HW7), which is meant to be committed
+# (and is fine in any public copy) — it is never real participant data. The one real
+# risk there (class12's debugging-only pilot CSV) is handled by instruction,
+# not a file pattern, since it's the same folder legitimate simulated data
+# lives in; your instructor will cover this in Class 12.
+hw3/data/*.csv
+
+# Instructor-only reference material — lives on the instructor's machine,
+# never ships in the repo students copy.
+INSTRUCTOR_SETUP.md
+
+# The optional December extra-credit exercise is distributed into student
+# repos later in the semester rather than shipping in the template — its
+# materials pair with assignments that haven't been handed out yet.
+extra_credit/
+
+# Python bytecode cache (created by any local run of the .py checks/scaffolds)
+__pycache__/

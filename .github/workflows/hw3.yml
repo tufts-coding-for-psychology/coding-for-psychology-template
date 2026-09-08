@@ -1,0 +1,46 @@
+name: HW3 autograder
+
+# Only re-runs when HW3's own folder changes — pushing HW5 work doesn't
+# trigger HW3's check, and vice versa. This is what makes per-homework
+# autograding workable inside one shared repo.
+on:
+  push:
+    paths:
+      - "hw3/**"
+
+jobs:
+  check:
+    # Skip on the template repo itself -- there's never a real submission
+    # here to check, only in each student's own copy created via "Use this
+    # template." Without this, every push to the template (even a README
+    # edit) trips a false-failure email.
+    if: github.repository != 'tufts-coding-for-psychology/coding-for-psychology-template'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hw3
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.4"
+          # Points package installs at RStudio's public binary mirror, so
+          # even a cold cache installs prebuilt binaries instead of
+          # compiling tidyverse from source (minutes -> seconds).
+          use-public-rspm: true
+
+      # Caches installed packages keyed by OS + R version + resolved package
+      # versions. First run per cache-key installs (fast, thanks to
+      # use-public-rspm above); every run after that restores from cache
+      # almost instantly. This matters because every student's Actions runs
+      # draw from one shared 2,000-min/month org-wide quota on GitHub Free.
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::tidyverse
+            any::knitr
+          cache-version: 1
+
+      - name: Run HW3 structural checks
+        run: Rscript check_hw3.R

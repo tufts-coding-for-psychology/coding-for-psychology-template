@@ -1,0 +1,58 @@
+---
+title: "Pilot Study — Mini Method/Results Report"
+author:
+  - name: "Your Name"
+    corresponding: true
+    affiliations:
+      - name: "Your University"
+# The gratitude field below is REQUIRED for all students: it's every
+# homework's Sources section in its APA-native home, the author note.
+# Honest acknowledgments never lower your grade. Keep it as ONE quoted
+# string (no `>` or `|` block style — apaquarto silently drops those).
+author-note:
+  disclosures:
+    gratitude: "TODO: a sentence or two acknowledging what sources you
+      turned to for help with this report — other people, posts on the
+      internet, software documentation, AI tools — or none at all."
+format: apaquarto-html
+editor: visual
+---
+
+<!--
+COPY THIS FILE INTO YOUR REPO-ROOT analysis/ FOLDER (done together in
+class09) -- it must sit next to the _extensions/ folder that
+`quarto add wjschne/apaquarto` created there, or rendering will fail.
+
+This template defaults to apaquarto-html so your first renders don't
+need the LaTeX/TinyTeX toolchain to finish installing. Switch to
+`format: apaquarto-pdf` for your actual HW5 submission, per class09 --
+PDF is the standard APA expectation. See hw5/README.md for details.
+-->
+
+## Method
+
+TODO: a brief description of your design (participants, conditions, procedure summary) — a few sentences, referencing your HW3 wrangling. Not a full method section.
+
+## Results
+
+TODO: insert your class08 ggplot2 plot as a figure with an APA-style caption, and a sentence of inline-code descriptive prose (M and SD per condition) — this course reports descriptively, not with a formal test.
+
+```{r}
+#| echo: false
+library(tidyverse)
+
+# TODO: read in / re-run whatever you need here so the inline code below
+# has real objects to reference (e.g., your HW3 summary_table). If it
+# doesn't already have a standard-deviation column, derive one with a
+# quick mutate() first, same as class09.
+```
+
+Reaction times were slower in the incongruent condition (M = `r round(mean_incong, 1)` ms, SD = `r round(sd_incong, 1)`) than the congruent condition (M = `r round(mean_cong, 1)` ms, SD = `r round(sd_cong, 1)`).
+
+---
+
+## PSY 0210 only: Discussion
+
+*(0110 students: attempting this is fine for practice, but it's optional/ungraded for you — skip if you like.)*
+
+TODO (0210): a brief paragraph interpreting your result and naming at least one limitation of your design (small sample, single manipulated factor, pilot-only data). Still a short addition, not a full Discussion section. Remember your extension's second piece: cite PsychoPy in the Method via `@peirce2019` (see `hw5/README.md`).

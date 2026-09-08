@@ -1,0 +1,73 @@
+---
+title: "HW3 — Data Wrangling with dplyr"
+author: "Your Name"
+format:
+  html:
+    embed-resources: true  # one self-contained .html file, nothing else to commit
+editor: visual
+---
+
+## Setup
+
+```{r}
+library(tidyverse)
+```
+
+## Read in your pilot data
+
+Your own class05 pilot CSV, saved as `data/pilot.csv` in this folder — **never commit this file** (see this folder's README for why; a `.gitignore` already covers it for you).
+
+```{r}
+my_data <- read_csv("data/pilot.csv")
+
+glimpse(my_data)
+```
+
+## Wrangle
+
+**Step 1 — standardize your column names** to exactly `condition`, `rt`, `correct` (required; see this folder's README for why — the automated check and the instructor's class-wide pooling both depend on these names). The `any_of()` pattern below renames your raw PsychoPy columns when they're present and does nothing when the names are already standardized, so the same code runs on your file and on the check's stand-in file.
+
+**Step 2 —** filter out any practice trials, then compute per-condition summary statistics. Your final object **must be named `summary_table`** and must have columns `condition`, `mean_rt`, `accuracy`, and `n` — the autograder checks for exactly this.
+
+```{r}
+summary_table <- my_data |>
+  # TODO: put YOUR raw column names on the right-hand sides below
+  # (e.g., "key_resp.rt"). Leave any line as-is if that column is
+  # already named correctly in your file.
+  rename(any_of(c(
+    condition = "congruent",     # <- your condition column's raw name
+    rt        = "key_resp.rt",   # <- your RT column's raw name
+    correct   = "key_resp.corr"  # <- your accuracy column's raw name
+  ))) |>
+  filter(TRUE) |>  # TODO: replace with your actual practice-trial filter, if any
+  group_by(condition) |>
+  summarize(
+    mean_rt = mean(rt, na.rm = TRUE),
+    accuracy = mean(correct, na.rm = TRUE),
+    n = n()
+  )
+
+summary_table
+```
+
+## Reflection
+
+*A few sentences: what did you have to clean up or rename to get here? Did anything about your own data surprise you compared to the original Stroop task's structure?*
+
+TODO: your reflection here.
+
+## Sources
+
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+
+TODO: your answer here.
+
+---
+
+## PSY 0210 extension: mean RT, two ways
+
+*(0110 students: optional/ungraded — feel free to attempt for practice.)*
+
+*Your `summary_table` above should carry both versions of mean RT — the required `mean_rt` column as whichever you'd report, plus a second column with the other (all trials vs. correct trials only). Two sentences here: why do the two numbers differ, and which belongs in a report of this task?*
+
+TODO: your answer here.
