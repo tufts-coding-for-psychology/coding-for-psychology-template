@@ -13,7 +13,10 @@ jobs:
     # here to check, only in each student's own copy created via "Use this
     # template." Without this, every push to the template (even a README
     # edit) trips a false-failure email.
-    if: github.repository != 'tufts-coding-for-psychology/coding-for-psychology-template'
+    # ...and skip the repo-creation push itself: templating a new student repo
+    # generates an initial commit touching every hwN/ folder at once, which
+    # would fire all six checks (and six failure emails) before any work exists.
+    if: github.repository != 'tufts-coding-for-psychology/coding-for-psychology-template' && github.event.created != true
     runs-on: ubuntu-latest
     defaults:
       run:
