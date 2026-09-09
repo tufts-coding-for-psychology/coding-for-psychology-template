@@ -6,10 +6,10 @@ Welcome! This one repo is where every homework for the semester lives — not a 
 
 If you're reading this on the *template* repo (`coding-for-psychology-template`), stop — don't commit here. Get your own copy first:
 
-1. Accept the invite to the `tufts-coding-for-psychology` GitHub organization (link from your instructor).
+1. Accept the invite to the `tufts-coding-for-psychology` GitHub organization. Check the email account you used when signing up for GitHub for a message from GitHub, or sign in to github.com and visit github.com/tufts-coding-for-psychology to see the invitation.
 2. Open `coding-for-psychology-template` and click the green **"Use this template" → "Create a new repository"** button near the top of the page.
 3. Set the owner to `tufts-coding-for-psychology` (not your personal account — this is what gives your instructor automatic access without you having to separately invite them), name it something like `coding-for-psych-<your-github-username>`, and keep it **private**.
-4. Do all your actual work in *that* new repo, not this template.
+4. Do all your actual work in *that* new private repo, not this public template.
 
 ## How this works
 
