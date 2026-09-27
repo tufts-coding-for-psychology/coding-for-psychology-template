@@ -1,125 +1,117 @@
 """
 check_conditions.py -- PSY 0210 starter template
 
-This file already handles the parts of the assignment that aren't the
-actual point of the exercise: reading a spreadsheet from disk, and
-letting the automated GitHub check run this script against a different
-file than the one you use to test it yourself. You don't need to
-understand every line above the TODO section -- just trust that it
-works and focus on the part that's actually yours to write.
+This script checks your conditions file against this course's
+minimum-observations rule: every condition needs at least 18 trials
+once your loop's repetitions are applied (rows x nReps).
 
-YOUR JOB is the part marked TODO below: counting how many trials each
-condition produces, and checking that against this course's minimum-
-observations rule. You already built this exact logic once, in
-class04's Colab warm-up -- a dictionary that counts occurrences
-of a value in a list. This is the same idea, just counting rows in a
-spreadsheet instead of items in a list.
+Steps:
+  1. Download this file and save it as check_conditions.py in the SAME
+     folder as your task's .psyexp and conditions file.
+  2. Change the four SETTINGS below to match your own task.
+  3. Fill in YOUR PART 1 and YOUR PART 2.
+  4. Open the file in PsychoPy Coder and click Run. It should print one
+     pass/fail line per condition.
+  5. Upload it to hw2/task/ along with the rest of your task.
 
-Two ways to run this file:
-  1. Click PsychoPy Coder's green Run button -- no changes needed, it
-     checks DEFAULT_PATH below.
-  2. From a terminal: python check_conditions.py some_file.csv
-     (this second way is how the automated GitHub check runs it)
-
-Steps to use this template:
-  1. Copy this file to hw2/task/check_conditions.py.
-  2. Change DEFAULT_PATH and CONDITION_COLUMN below to match your own
-     conditions file.
-  3. Fill in the TODO section in main() with your own counting logic.
-  4. Test it by clicking Run in Coder -- it should check your own
-     conditions file and print one pass/fail line per condition.
+The part marked ALREADY WRITTEN FOR YOU picks which file to check and
+reads it. You don't need to change it.
 """
 
 import sys
-from pathlib import Path
-
 import pandas as pd
 
-# --- Change these two to match your own conditions file ---
-DEFAULT_PATH = "conditions.xlsx"     # your own file, for local testing
+# ---------------------------------------------------------------------
+# SETTINGS -- change these four to match your own task.
+# ---------------------------------------------------------------------
+
+# Your conditions file's name. Keep this script in the same folder as
+# that file.
+DEFAULT_PATH = "conditions.xlsx"
+
 # The column that names each row's CONDITION -- the factor your task
-# manipulates. In the original Stroop conditions file that's `congruent`
-# (1 = congruent, 0 = incongruent), NOT a stimulus property like
-# `letterColor`: the >=18 rule is about observations per level of the
-# manipulated factor, and counting per letter color would test the
-# wrong thing.
+# manipulates. In the original Stroop task's conditions file that's
+# `congruent` (1 = congruent, 0 = incongruent), NOT a stimulus property
+# like `letterColor`: the rule is about observations per level of the
+# factor you manipulate, so counting letter colors would test the wrong
+# thing.
 CONDITION_COLUMN = "congruent"
 
-# Every condition needs at least this many trials once repetitions are
-# applied -- this course's minimum-observations rule.
-MIN_TRIALS = 18
-
-# How many times your PsychoPy loop repeats each row (your loop's nReps).
-# Change this to match your own conditions file too.
+# How many times your PsychoPy loop repeats each row (the loop's nReps).
 N_REPS = 6
 
+# This course's minimum-observations rule.
+MIN_TRIALS = 18
+
 
 # ---------------------------------------------------------------------
-# Already written for you. Reads the conditions file and hands back a
-# plain Python list of condition labels, one per row -- e.g., for the
-# original Stroop file's `congruent` column:
+# ALREADY WRITTEN FOR YOU -- you don't need to change anything here.
+# ---------------------------------------------------------------------
+
+# Pick which file to check. When you click Run in Coder, this uses
+# DEFAULT_PATH. The automated check on GitHub runs this same script
+# against a small sample file instead, by typing that file's name after
+# the script's name -- Python makes that name available as sys.argv[1].
+if len(sys.argv) > 1:
+    file_name = sys.argv[1]
+else:
+    file_name = DEFAULT_PATH
+
+# Read the spreadsheet (.csv or .xlsx) with pandas, then keep just the
+# condition column as a plain list, one entry per row. For the original
+# Stroop task's conditions file, that list is:
 #   [1, 0, 1, 0, 1, 0]
-# You don't need to touch this function.
+if file_name.endswith(".csv"):
+    table = pd.read_csv(file_name)
+else:
+    table = pd.read_excel(file_name)
+labels = list(table[CONDITION_COLUMN])
+
+print("Checking", file_name)
+
+
 # ---------------------------------------------------------------------
-def load_condition_labels(path):
-    if not Path(path).exists():
-        print(f"Could not find conditions file: {path}")
-        sys.exit(1)
-    if path.endswith(".csv"):
-        df = pd.read_csv(path)
-    else:
-        df = pd.read_excel(path)
-    return df[CONDITION_COLUMN].tolist()
+# YOUR PART 1 -- count how many rows each condition has.
+#
+# Build a dictionary where each key is a condition and each value is
+# how many times that condition appears in `labels`. For the original
+# Stroop task you should end up with {1: 3, 0: 3}.
+#
+# This is the counting pattern from Think Python ch. 10 ("A collection
+# of counters") and from the class04 Colab warm-up: start with an empty
+# dictionary, loop over the list, and for each item either add it as a
+# new key with a count of 1, or add 1 to the count it already has.
+# ---------------------------------------------------------------------
+
+condition_counts = {}
+
+# your counting loop goes here
 
 
-def main():
-    # sys.argv[0] is always this script's own name; a real argument
-    # (like the sample file the automated check passes in) shows up
-    # starting at index 1. This line is why the SAME script works both
-    # from Coder's Run button (no argument -> DEFAULT_PATH) and from
-    # a terminal with a filename (used by the automated check).
-    path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_PATH
-    labels = load_condition_labels(path)
+# ---------------------------------------------------------------------
+# YOUR PART 2 -- print one pass/fail line per condition.
+#
+# The loop below is already started for you. It visits each key in
+# condition_counts (the `for key in dictionary` pattern from Think
+# Python ch. 10's "Looping and dictionaries"), looks up that
+# condition's row count, and multiplies by N_REPS to get its number of
+# trials.
+#
+# Inside the loop, add an if/else: if n_trials is at least MIN_TRIALS,
+# print a line saying the condition is OK; otherwise, print a line
+# saying it fails. For example, this print() call:
+#   print("Condition", condition, "has", n_trials, "trials - OK")
+# prints:
+#   Condition 1 has 18 trials - OK
+# Write the "fails" line yourself, and include MIN_TRIALS in it.
+#
+# Print the result -- don't stop the script with an error when a
+# condition fails. The automated check on GitHub feeds this script a
+# sample file that includes a failing condition on purpose, and it
+# treats an error as a crash.
+# ---------------------------------------------------------------------
 
-    print(f"Checking {path}...\n")
-
-    # -------------------------------------------------------------
-    # TODO -- this is your part.
-    #
-    # `labels` is a plain list, one entry per row -- for the original
-    # Stroop file's `congruent` column that's:
-    #   [1, 0, 1, 0, 1, 0]
-    #
-    # Using the same dictionary-counting pattern from class04's
-    # Colab warm-up: build a dictionary that counts how many times each
-    # condition appears in `labels`, then multiply each count by N_REPS
-    # to get total trials per condition.
-    #
-    # Finally, print one line per condition, labeled with the column's
-    # own values, e.g. (1 = congruent, 0 = incongruent):
-    #   1: 18 trials -- OK
-    #   0: 12 trials -- FAILS minimum of 18
-    #
-    # PRINT the pass/fail lines -- do NOT call sys.exit() with a
-    # non-zero code when a condition fails. The automated check on
-    # GitHub deliberately feeds this script a sample file containing a
-    # failing condition, and it treats any non-zero exit as a crash.
-    #
-    # Hint: start with an empty dictionary. Loop over `labels`, and for
-    # each one, add 1 to that condition's running count -- this is the
-    # exact pattern you used in class04's warm-up, just looping
-    # over conditions-file rows here instead of a plain list.
-    # -------------------------------------------------------------
-
-    condition_counts = {}
-    # your counting loop goes here
-
-    for condition, n_rows in condition_counts.items():
-        n_trials = n_rows * N_REPS
-        # your pass/fail print statement goes here, using n_trials
-        # and MIN_TRIALS
-        pass
-
-
-if __name__ == "__main__":
-    main()
+for condition in condition_counts:
+    n_rows = condition_counts[condition]
+    n_trials = n_rows * N_REPS
+    # your if/else and print() lines go here
