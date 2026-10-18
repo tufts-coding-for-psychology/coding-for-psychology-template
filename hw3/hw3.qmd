@@ -15,59 +15,89 @@ library(tidyverse)
 
 ## Read in your pilot data
 
-Your own class05 pilot CSV, saved as `data/pilot.csv` in this folder — **never commit this file** (see this folder's README for why; a `.gitignore` already covers it for you).
+Copy your class05 CSVs into `data/` in this folder. These are the same files you uploaded to Canvas; however many you have (one is fine). **Never commit those files** (see this folder's README for why; a `.gitignore` already covers it for you).
+
+Now build the Class 7 read-in loop: read each file, keeping only the columns you need, and stack the files into one table. **You already wrote a working version in class; it's in your `class07.qmd`.** Rebuild it here, with the `col_select` list **edited to match YOUR task**. The rule is *who, your design, your measurements*:
+
+- `participant` — who (it becomes text because the 4-digit values are labels, not numbers that we'll summarize in any way; also, a character type plays better with leading zeros \[e.g., 0933\]).
+- your condition column(s) — `congruent` for everyone, **plus any factor column you added in HW1** (for example, `size`).
+- `resp.rt` and `resp.corr` — the measurements (we started with a task that called the keyboard device 'resp'; use your keyboard's name if you renamed it).
+- your main trials loop's counter — `trials.thisN` for most of you. If you renamed your loop, `glimpse()` one file and look for the column ending in `.thisN`.
+- `date` — each run's start time, which is what tells your files apart, handy in case two people by chance used the same 4-digit participant number.
+
+The first line is done for you (its `pattern` uses punctuation we never taught — don't change it):
 
 ```{r}
-my_data <- read_csv("data/pilot.csv")
+files <- list.files("data", pattern = "\\.csv$", full.names = TRUE)
 
-glimpse(my_data)
+# TODO: your read-in loop here. Start an empty data.frame called
+# mydata_all, then for each file: read_csv() with YOUR col_select
+# keep-list, convert participant to character, bind_rows() onto the pile.
+# End the chunk with glimpse(mydata_all).
 ```
+
+**Check before moving on:** `glimpse()` should show rows from every file (files × rows-per-file). If it shows 0 rows, `files` came up empty; your CSVs aren't where the pattern is looking.
 
 ## Wrangle
 
-**Step 1 — standardize your column names** to exactly `condition`, `rt`, `correct` (required; see this folder's README for why — the automated check and the instructor's class-wide pooling both depend on these names). The `any_of()` pattern below renames your raw PsychoPy columns when they're present and does nothing when the names are already standardized, so the same code runs on your file and on the check's stand-in file.
+**Step 1 — keep only real trials.** Your main loop's counter has a number on every real trial and is empty (`NA`) on practice trials and instruction screens, so one `filter()` drops all of them at once. (If you renamed your loop, use your `.thisN` column here too.)
 
-**Step 2 —** filter out any practice trials, then compute per-condition summary statistics. Your final object **must be named `summary_table`** and must have columns `condition`, `mean_rt`, `accuracy`, and `n` — the autograder checks for exactly this.
+**Step 2 — standardize your column names** to exactly `condition`, `rt`, `correct` (required; see this folder's README for why; the automated check and Heather's class-wide pooling both depend on these names). The `rename(any_of(...))` pattern renames your raw columns when they're present and does nothing when the names have already been standardized, so the same code runs on your files and on the check's stand-in files. Put YOUR raw column names on the right-hand sides, in quotes.
 
 ```{r}
-summary_table <- my_data |>
-  # TODO: put YOUR raw column names on the right-hand sides below
-  # (e.g., "key_resp.rt"). Leave any line as-is if that column is
-  # already named correctly in your file.
-  rename(any_of(c(
-    condition = "congruent",     # <- your condition column's raw name
-    rt        = "key_resp.rt",   # <- your RT column's raw name
-    correct   = "key_resp.corr"  # <- your accuracy column's raw name
-  ))) |>
-  filter(TRUE) |>  # TODO: replace with your actual practice-trial filter, if any
-  group_by(condition) |>
-  summarize(
-    mean_rt = mean(rt, na.rm = TRUE),
-    accuracy = mean(correct, na.rm = TRUE),
-    n = n()
-  )
+# TODO: clean_data — start from mydata_all, filter() to real trials
+# (your .thisN column), then rename(any_of(...)) so the result has
+# condition, rt, and correct. End the chunk with glimpse(clean_data).
+```
 
-summary_table
+**Step 3 — keep only correct trials for RT.** Accuracy and reaction time ask different questions of different rows: accuracy is about *all* the real trials (how often was the response right?), but mean RT should average only the trials where it *was* right; the speed of a wrong answer doesn't measure what you think it does. Same `filter()` verb as Step 1, different condition.
+
+```{r}
+# TODO: correct_trials — start from clean_data, keep only rows
+# where correct equals 1.
+```
+
+**Step 4 — accuracy by condition.** Built from `clean_data`, because accuracy's denominator is *all* real trials. Your object **must be named `accuracy_table`** with columns `condition`, `accuracy`, and `n` — the autograder checks for exactly this.
+
+```{r}
+# TODO: accuracy_table — group clean_data by condition, then
+# summarize() accuracy (the mean of correct) and n (the trial count).
+# Print the table by putting its name on the chunk's last line.
+```
+
+**Step 5 — mean RT by condition, correct trials only.** Built from `correct_trials`. Your object **must be named `rt_table`** with columns `condition`, `mean_rt`, and `n`. Compare its `n` column with `accuracy_table`'s. The difference is your error trials dropping out, which is exactly what the Step 3 filter did.
+
+```{r}
+# TODO: rt_table — same move as Step 4, but from correct_trials,
+# summarizing mean_rt and n. Print it on the chunk's last line.
+```
+
+**Step 6 — mean RT by participant and condition.** Same move, one more grouping column, still correct trials only. Your object **must be named `by_participant`** with columns `participant`, `condition`, `mean_rt`, and `n` — one row per person per condition. This is the table Class 8's figure is drawn from.
+
+```{r}
+# TODO: by_participant — group correct_trials by participant AND
+# condition, summarize mean_rt and n, and add .groups = "drop" inside
+# summarize() so the finished table is a plain tibble. Print it.
 ```
 
 ## Reflection
 
-*A few sentences: what did you have to clean up or rename to get here? Did anything about your own data surprise you compared to the original Stroop task's structure?*
+*A few sentences: what did you have to change, compared to the class07 version, to make this work for YOUR task? Looking at `by_participant`, do your participants look alike, or does the effect vary from person to person?*
 
 TODO: your reflection here.
 
 ## Sources
 
-*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools, or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
 
 TODO: your answer here.
 
----
+------------------------------------------------------------------------
 
 ## PSY 0210 extension: mean RT, two ways
 
 *(0110 students: optional/ungraded — feel free to attempt for practice.)*
 
-*Your `summary_table` above should carry both versions of mean RT — the required `mean_rt` column as whichever you'd report, plus a second column with the other (all trials vs. correct trials only). Two sentences here: why do the two numbers differ, and which belongs in a report of this task?*
+*Your `rt_table` uses correct trials only. Also compute the all-trials version — one more `group_by()` + `summarize()`, this time on `clean_data` — as a separate table (name it something like `rt_table_all`). Then two sentences here: why do the two numbers differ, and which belongs in a report of this task? There's a defensible case either way.*
 
 TODO: your answer here.
