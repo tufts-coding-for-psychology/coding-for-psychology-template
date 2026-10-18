@@ -7,8 +7,8 @@ Simulate **one** hypothetical sample of participants for your own pilot design, 
 
 ## What to do
 
-1. **Simulate** condition means for N hypothetical participants with `rnorm()`, using **your own HW3 condition means as the centers** and the **class pooled between-subject SD** (given in class10) as the spread — same mechanics as class10's guided build, with your own numbers.
-2. **Wrangle** the simulated data into a condition-level summary table with `group_by()` + `summarize()` — one row per condition, same shape as HW3's table.
+1. **Simulate** condition means for N hypothetical participants with `rnorm()`, using **your own HW3 `rt_table` means as the centers** and the **class pooled between-subject SD** (given in class10) as the spread — same mechanics as class10's guided build, with your own numbers.
+2. **Wrangle** the simulated data into a condition-level summary table with `group_by()` + `summarize()` — one row per condition, same shape as HW3's `rt_table`.
 3. **Visualize** it with your class08 figure code, adapted to the simulated table.
 4. Save your simulated dataset as `data/pilot_sim.csv` **inside this `hw6/` folder** (the template's code does this for you). Simulated data is never real participant data — completely fine to commit.
 

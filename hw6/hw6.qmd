@@ -15,10 +15,10 @@ library(tidyverse)
 
 ## Simulate your pilot design
 
-Your own HW3 condition means as the centers; the class pooled between-subject SD (from class10) as the spread. Same mechanics as class10's guided build.
+Your own HW3 `rt_table` means as the centers; the class pooled between-subject SD (from class10) as the spread. Same mechanics as class10's guided build.
 
 ```{r}
-# TODO: replace with your own HW3 means and the class pooled SD
+# TODO: replace with your own HW3 rt_table means and the class pooled SD
 set.seed(2026)
 n_participants <- 20  # simulated people, not trials
 
