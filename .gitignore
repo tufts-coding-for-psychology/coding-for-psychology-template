@@ -27,3 +27,6 @@ extra_credit/
 
 # Python bytecode cache (created by any local run of the .py checks/scaffolds)
 __pycache__/
+
+# Ignore .Rhistory
+hw*/.Rhistory
