@@ -21,36 +21,50 @@ editor: visual
 
 ## Clean your data
 
-Your file has real issues in it — missing values, at least one implausible/extreme value, and at least one column with mixed text-and-number entries. Find them, decide what to do about each, and say briefly why.
+*Your file has some issues, including missing values, at least one implausible/extreme value, and at least one column with mixed text-and-number entries. Find them, decide what to do about each, then implement those decisions in the code chunk below.*
 
 ```{r}
 
 ```
+
+## Look at your data
+
+*At least one figure that helps you check your data. Below it, a sentence or two: what did it show you?*
+
+```{r}
+
+```
+
+TODO: what your figure(s) showed you.
 
 ## Correlation
 
+*Compute the correlation. Below the code chunk, report the correlation. If `cor()` returns `NA`, at least one value is missing; `?cor` in the Console explains the options.*
+
 ```{r}
 
 ```
 
-## Interpretation
+TODO: what the correlation was.
 
-*A short paragraph: what does this correlation suggest about the relationship between sleep and physical activity in this sample? Anything else about your dataset worth mentioning?*
+## What do you conclude?
 
-TODO: your interpretation here.
+*A short paragraph: what do you conclude from your dataset? Draw on everything you found, not just the correlation. Anything else about your dataset worth mentioning?*
+
+TODO: your conclusion here.
 
 ## Sources
 
-*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools — or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
+*A sentence or two: what sources did you turn to for help on this homework? Sources can be other people, posts on the internet, software documentation, AI tools, or none at all. (Honest answers here never lower your grade; using help well is part of coding.)*
 
 TODO: your answer here.
 
----
+------------------------------------------------------------------------
 
 ## PSY 0210 extension: data-cleaning memo
 
 *(0110 students: optional/ungraded — feel free to attempt for practice.)*
 
-*A bulleted log (roughly 5–10 bullets) of every cleaning decision you made above: what you found, what you did about it, and why — written so someone else could retrace and defend each choice.*
+*A bulleted log (roughly 5–10 bullets) of every cleaning decision you made above: what you found, how many observations it affected, what you did about it, and why. Write so someone else could retrace and evaluate each choice.*
 
 - TODO: your memo here.

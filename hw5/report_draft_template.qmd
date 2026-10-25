@@ -41,10 +41,12 @@ TODO: insert your class08 ggplot2 plot as a figure with an APA-style caption, an
 #| echo: false
 library(tidyverse)
 
-# TODO: read in / re-run whatever you need here so the inline code below
-# has real objects to reference (e.g., your HW3 summary_table). If it
-# doesn't already have a standard-deviation column, derive one with a
-# quick mutate() first, same as class09.
+# TODO: re-run your Class 8 code (class08/pilot_figure.qmd) that builds
+# summary_table (mean_rt and sd_rt per condition, in ms), so the inline
+# code below has real objects to reference. Then pull out the numbers,
+# e.g. mean_incong <- summary_table$mean_rt[summary_table$condition == "incongruent"]
+# and sd_incong <- summary_table$sd_rt[summary_table$condition == "incongruent"]
+# (same as class09).
 ```
 
 Reaction times were slower in the incongruent condition (M = `r round(mean_incong, 1)` ms, SD = `r round(sd_incong, 1)`) than the congruent condition (M = `r round(mean_cong, 1)` ms, SD = `r round(sd_cong, 1)`).
