@@ -15,6 +15,10 @@ author-note:
       turned to for help with this report — other people, posts on the
       internet, software documentation, AI tools — or none at all."
 format: apaquarto-html
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
 <!--
