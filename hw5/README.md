@@ -3,15 +3,15 @@
 **Due:** Mon Nov 9, 11:59 PM (the no-class week — this lands here on purpose, so it's never due the same day as a quiz)
 **From:** Class 09 (Reproducible Reporting)
 
-**Your work for this homework lives in the repo-root `analysis/` folder, not here.** In class09 you created `analysis/`, installed the `apaquarto` extension into it, copied this folder's `report_draft_template.qmd` in, and started your Method/Results draft. This homework is finishing and polishing that draft — not a fresh build. The draft matters beyond this grade: it's the first working version of your final project's report, which will live in this same `analysis/` folder.
+**Your work for this homework lives in the repo-root `analysis/` folder, not here.** In class09 you created `analysis/`, installed the `apaquarto` extension into it, saved a copy of your Class 8 file there with this folder's `report_draft_template.qmd` header pasted in (copying the whole template in and adding your Class 8 code works too), and started your Method/Results draft. This homework is finishing and polishing that draft — not a fresh build. The draft matters beyond this grade: it's the first working version of your final project's report, which will live in this same `analysis/` folder.
 
 ## What to do
 
 1. **Finish the draft** in `analysis/`: a brief Method paragraph (participants, conditions, procedure — a few sentences referencing your HW3 wrangling), and a Results section with your class08 plot as an APA-captioned figure plus a sentence of inline-code M/SD prose. Descriptive reporting only — no test statistic.
 2. **Fill in the author note** in the YAML header (the `gratitude:` field the template already carries): a sentence or two acknowledging what sources you turned to for help — other people, internet posts, software documentation, AI tools, or none at all. This is every homework's Sources section in its APA-native home; honest acknowledgments never lower your grade.
 3. **Render to PDF** (`format: apaquarto-pdf`) once TinyTeX cooperates — PDF is the standard APA expectation. If PDF genuinely won't work on your machine after the troubleshooting below, render to HTML and flag it to the instructor.
-4. **Commit the rendered output** (the `.pdf`, or `.html` per step 3) into `analysis/` along with your `.qmd` and the `_extensions/` folder. These are software artifacts and your own writing, not private data — fine to commit. (Your report's *numbers* come from your HW3 summary table, not from the raw pilot CSV, which stays uncommitted as always.)
-5. **Create the other two final-project folders** at the repo root: `task/` and `data/`. Empty folders with a `.gitkeep` file are fine — class11 assumes all three exist.
+4. **Commit the rendered output** (the `.pdf`, or `.html` per step 3) into `analysis/` along with your `.qmd` and the `_extensions/` folder. These are software artifacts and your own writing, not private data — fine to commit. (Your report's *numbers* are computed from your raw pilot CSVs each time it renders, reading them from `hw3/data/`, where they stay, uncommitted as always. Never copy them into `analysis/` or the root `data/` folder.)
+5. **Create the other two final-project folders** at the repo root, `task/` and `data/`, if you didn't in class09. Empty folders with a `.gitkeep` file are fine — class11 assumes all three exist. The root `data/` folder is for your final project's simulated data; your pilot CSVs never go there.
 
 ## If your class09 install broke (or you missed class)
 
@@ -22,7 +22,7 @@ The complete self-serve path, terminal steps included:
 3. In the terminal, type `cd analysis` and press Enter — the prompt should now end in `analysis`.
 4. Run `quarto add wjschne/apaquarto`. Confirm `analysis/_extensions/wjschne/apaquarto/` appears.
 5. Run `quarto install tinytex` (needed for PDF; takes several minutes the first time — it is not stuck).
-6. Copy `hw5/report_draft_template.qmd` into `analysis/` and pick up at "What to do" above. Stuck? Post on Piazza — don't wait until the night it's due.
+6. Start your draft in `analysis/`, either way: **Save As** your Class 8 file (`class08/pilot_figure.qmd`) into `analysis/` and paste the YAML header from `hw5/report_draft_template.qmd` over its header (the class09 route), or copy `hw5/report_draft_template.qmd` into `analysis/` and paste your Class 8 code into it. Either way, the data path from `analysis/` is `"../hw3/data"`. Then pick up at "What to do" above. Stuck? Post on Piazza — don't wait until the night it's due.
 
 ## PSY 0210 only
 
