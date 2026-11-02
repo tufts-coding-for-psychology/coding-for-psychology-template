@@ -15,7 +15,6 @@ author-note:
       turned to for help with this report — other people, posts on the
       internet, software documentation, AI tools — or none at all."
 format: apaquarto-html
-editor: visual
 ---
 
 <!--
@@ -49,7 +48,7 @@ library(tidyverse)
 # (same as class09).
 ```
 
-Reaction times were slower in the incongruent condition (M = `r round(mean_incong, 1)` ms, SD = `r round(sd_incong, 1)`) than the congruent condition (M = `r round(mean_cong, 1)` ms, SD = `r round(sd_cong, 1)`).
+Reaction times were slower in the incongruent condition (M = `{r} round(mean_incong, 1)` ms, SD = `{r} round(sd_incong, 1)`) than the congruent condition (M = `{r} round(mean_cong, 1)` ms, SD = `{r} round(sd_cong, 1)`).
 
 ---
 
