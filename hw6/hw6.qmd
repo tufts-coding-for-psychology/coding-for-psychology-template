@@ -7,62 +7,127 @@ format:
 editor: visual
 ---
 
+## Submission checklist
+
+*Check each item below, then mark it done by changing `[ ]` to `[x]` (with NO spaces before or after x in the square brackets). Every box must be checked: the checklist is part of the assignment. Every item counts toward the Complete criterion I apply when evaluating homework, including using exact names.*
+
+- [ ] I will commit and push **both** `hw6.qmd` and the rendered `hw6.html`.
+- [ ] This file is named exactly `hw6.qmd`, and it is in the `hw6/` folder.
+- [ ] I rendered this file, and the rendered file is named exactly `hw6.html`, in the same `hw6/` folder.
+- [ ] I saved my simulated data as `hw6/data/pilot_sim.csv`.
+- [ ] My objects are named exactly `by_participant`, `sim_data` and `summary_table`, each with **at least** the columns its step asks for.
+- [ ] I used my own pilot data (or the flanker data, because I piloted only one or two people).
+- [ ] I replaced "Your Name" above with my name.
+
 ## Setup
 
 ```{r}
 library(tidyverse)
+
+theme_set(theme_minimal())
+
 ```
 
-## Simulate your pilot design
+## From Class 10 to your own data
 
-Your own HW3 `rt_table` means as the centers; the class pooled between-subject SD (from class10) as the spread. Same mechanics as class10's guided build.
+In Class 10 you did each step below on the flanker data. Here you do them on your own pilot data, and you write the code yourself. Two files are good references: your HW5 draft, `analysis/pilot_report.qmd`, which already reads and wrangles your pilot data, and your class file, `class10/class10.qmd`.
+
+**Which data?** Use your own pilot data, the files in `hw3/data/`. If you piloted only one or two people, use the Class 7 flanker data in `class07/data/` instead: one or two people can't tell you how much people differ from one another.
+
+**Step 1 — your pilot data, one row per person per condition.** Read your pilot files and build `by_participant`, with columns `participant`, `condition` and `mean_rt`: one row per person per condition, main trials only, correct trials only, mean RT in milliseconds. Your HW5 draft already does most of this, so copy that code here. Watch for four things:
+
+- **The path.** This file is in `hw6/`, so your files are at `"../hw3/data"` (the flanker files are at `"../class07/data"`).
+- **Practice and instruction rows.** Keep only the main trials, with the same filter you used in HW3.
+- **Milliseconds.** PsychoPy records RT in seconds. Multiply by 1000, as in Class 10: `mean_rt = mean(rt * 1000)`.
+- **Condition labels.** If `condition` shows `0` and `1` instead of words, add Class 8's factor step with your own codes, for example `mutate(condition = factor(condition, levels = c(1, 0), labels = c("congruent", "incongruent")))`. Your conditions file tells you which number means congruent.
 
 ```{r}
-# TODO: replace with your own HW3 rt_table means and the class pooled SD
-set.seed(2026)
-n_participants <- 20  # simulated people, not trials
-
-congruent   <- rnorm(n_participants, mean = 600, sd = 90)
-incongruent <- rnorm(n_participants, mean = 650, sd = 90)
-
-sim_data <- tibble(
-  participant = rep(1:n_participants, times = 2),
-  condition   = rep(c("congruent", "incongruent"), each = n_participants),
-  mean_rt     = c(congruent, incongruent)
-)
+# TODO: read your pilot files and build by_participant
 ```
 
-## Save your simulated data
-
-Simulated data is fine to commit — this isn't real pilot data.
+This check chunk is already written. Run it after Step 1.
 
 ```{r}
-dir.create("data", showWarnings = FALSE)
-write_csv(sim_data, "data/pilot_sim.csv")
+stopifnot("by_participant is empty: check your data path" = nrow(by_participant) > 0)
+by_participant |> count(condition)   # one row per condition; n = how many people you piloted
+range(by_participant$mean_rt)        # milliseconds (hundreds), not seconds (like 0.4 to 0.9)
 ```
 
-## Wrangle
+**Step 2 — your four numbers.** Use Class 10's steps on `by_participant`: `pivot_wider()` to get one row per person, then each person's effect (incongruent minus congruent). From those, create these four objects, in milliseconds:
 
-Same dplyr pattern as HW3, applied to your simulated data. Your final object **must be named `summary_table`**, with a mean-DV column whose name starts with `mean_`.
+- `mean_congruent`: your people's average congruent mean
+- `sd_congruent`: how much your people's congruent means differ (their SD)
+- `mean_effect`: your people's average effect
+- `sd_effect`: how much your people's effects differ (their SD)
+
+Print the correlation of your people's congruent and incongruent means too, with `cor()`, as in Class 10. Two things to watch:
+
+- `pivot_wider()` needs `id_cols = participant`. Without it, each person ends up on two half-empty rows, and your SDs and correlation come out `NA`.
+- If something still comes out `NA`, someone has no correct trials in one condition. Drop them first with `filter(!is.na(congruent), !is.na(incongruent))`.
 
 ```{r}
-summary_table <- sim_data |>
-  group_by(condition) |>
-  summarize(
-    mean_rt = mean(mean_rt),
-    n = n()
-  )
-
-summary_table
+# TODO: wide (one row per person), each person's effect, then your four numbers
 ```
+
+**Step 3 — simulate 50 people.** The same simulated people do both conditions, just like your real participants. Your object **must be named `sim_data`**, with columns `participant`, `condition` and `mean_rt`: one row per simulated person per condition, so 100 rows. Start with `set.seed(2026)`, then:
+
+- draw each person's congruent mean with `rnorm()`, using `mean_congruent` and `sd_congruent`
+- draw each person's own effect with `rnorm()`, using `mean_effect` and `sd_effect`
+- make each person's incongruent mean: their congruent mean plus their own effect
+- combine them into `sim_data`. If your condition labels aren't `congruent` and `incongruent`, use your own.
+
+```{r}
+# TODO: set.seed(2026), 50 people, the paired draws, then sim_data
+```
+
+**Step 4 — save your simulated data.** Simulated data is fine to commit — this isn't real pilot data. The first line below is already written: it makes the `data/` folder. Then save `sim_data` as `data/pilot_sim.csv` with `write_csv()`.
+
+```{r}
+dir.create("data", showWarnings = FALSE) # this command creates the data folder
+# TODO: save sim_data as data/pilot_sim.csv
+```
+
+**Step 5 — summary table.** The same move as Class 8's `summary_table`, applied to `sim_data`. Your object **must be named `summary_table`**, with one row per condition and columns `condition`, `mean_rt`, `sd_rt` and `n`. Print it on the chunk's last line.
+
+```{r}
+# TODO: summary_table from sim_data: group by condition, then summarize
+# sd_rt, mean_rt and n (sd_rt first, as in Class 8), then print
+```
+
+## Check your simulation
+
+This chunk is already written. Run it once Steps 3 and 5 work. If your condition labels aren't `congruent` and `incongruent`, change them here too.
+
+```{r}
+nrow(sim_data)                     # should be 100: 50 people x 2 conditions (150 with a third level)
+n_distinct(sim_data$participant)   # should be 50: the same people in both conditions
+
+check_wide <- sim_data |>
+  pivot_wider(id_cols = participant, names_from = condition, values_from = mean_rt)
+
+mean(check_wide$incongruent - check_wide$congruent)  # your simulated effect
+mean_effect                                          # the effect you simulated from
+
+cor(check_wide$congruent, check_wide$incongruent)    # your simulated correlation
+```
+
+Your simulated correlation should be at least .40 (and probably larger!). If it's below .40, your two conditions came from different simulated people: go back to Step 3.
+
+*1–2 sentences: why isn't your simulated effect exactly the same as `mean_effect`?*
+
+TODO: your answer here.
 
 ## Visualize
 
-Your class08 figure code, adapted to the simulated table.
+Plot your real pilot data and your simulated data with the same figure code: copy your Class 8 figure code into the chunk below twice, once with `by_participant` and once with `sim_data`. (If you used the flanker data, your real figure also shows the neutral condition.)
 
 ```{r}
-# TODO: build your figure
+# TODO: your Class 8 figure code, once with by_participant and once with sim_data
 ```
+
+*1–2 sentences: compare your real figure with your simulated one. What looks the same, what looks different, and why?*
+
+TODO: your answer here.
 
 ## Sources
 
@@ -70,18 +135,18 @@ Your class08 figure code, adapted to the simulated table.
 
 TODO: your answer here.
 
----
+------------------------------------------------------------------------
 
 ## PSY 0210 extension: two sample sizes
 
 *(0110 students: optional/ungraded — feel free to attempt for practice.)*
 
-Re-run your simulation with a much larger N (e.g., 200), plot both versions with the same figure code, and answer below.
+Simulate again with 200 people instead of 50, keeping your four numbers the same. Give the new data a new name (for example, `sim_data_200`) so your 50-person `sim_data` and `summary_table` stay as they are. Plot it with the same figure code, and answer below. Optional stretch: write a function that takes the number of people and returns a data frame like `sim_data`, then use it for both 50 and 200 (Class 10's `simulate_study()` is the model).
 
 ```{r}
-# TODO (0210): the same simulation at a second sample size, plus its plot
+# TODO (0210): the same simulation with 200 people, saved as sim_data_200, plus its plot
 ```
 
-*1–2 sentences: what changed between the two plots, and why?*
+*1–2 sentences: what changed between the 50-person plot and the 200-person plot, and why?*
 
 TODO: your answer here.
